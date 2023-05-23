@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option csharp_namespace = "ClansGrpcService.Protos";
+
+service Clan {
+  rpc AddClan (AddClanRequest) returns (AddClanResponse);
+  rpc GetClan (GetClanRequest) returns (GetClanResponse);
+  rpc UpdateClan (UpdateClanRequest) returns (UpdateClanResponse);
+  rpc DeleteClan (DeleteClanRequest) returns (DeleteClanResponse);
+
+  //rpc AddClanMember (AddClanMemberRequest) returns (AddClanMemberResponse);
+  //rpc RemoveClanMember (RemoveClanMemberRequest) returns (RemoveClanMemberResponse);
+
+  //rpc SetClanLeader (SetClanLeaderRequest) returns (SetClanLeaderResponse);
+}
+
+message Location {
+  string world = 1;
+  double x = 2;
+  double y = 3;
+  double z = 4;
+  double yaw = 5;
+  double pitch = 6;
+}
+
+message AddClanRequest {
+  string name = 1;
+  string leader = 2;
+  Location location = 3;
+}
+
+message AddClanResponse {
+  string message = 1;
+}
+
+message DeleteClanRequest {
+  string message = 1;
+}
+
+message DeleteClanResponse {
+  string message = 1;
+}
+
+message UpdateClanRequest {
+  string message = 1;
+}
+
+message UpdateClanResponse {
+  string message = 1;
+}
+
+message GetClanRequest {
+  string message = 1;
+}
+
+message GetClanResponse {
+  string message = 1;
+}
