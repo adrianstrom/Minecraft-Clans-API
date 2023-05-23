@@ -8,8 +8,8 @@ service Clan {
   rpc UpdateClan (UpdateClanRequest) returns (UpdateClanResponse);
   rpc DeleteClan (DeleteClanRequest) returns (DeleteClanResponse);
 
-  //rpc AddClanMember (AddClanMemberRequest) returns (AddClanMemberResponse);
-  //rpc RemoveClanMember (RemoveClanMemberRequest) returns (RemoveClanMemberResponse);
+  rpc AddClanMember (AddClanMemberRequest) returns (AddClanMemberResponse);
+  rpc RemoveClanMember (RemoveClanMemberRequest) returns (RemoveClanMemberResponse);
 
   //rpc SetClanLeader (SetClanLeaderRequest) returns (SetClanLeaderResponse);
 }
@@ -34,7 +34,8 @@ message AddClanResponse {
 }
 
 message DeleteClanRequest {
-  string message = 1;
+  string name = 1;
+  string playerId = 2;
 }
 
 message DeleteClanResponse {
@@ -55,4 +56,22 @@ message GetClanRequest {
 
 message GetClanResponse {
   string message = 1;
+}
+
+message AddClanMemberRequest {
+  string clanName = 1;
+  string playerId = 2;
+}
+
+message AddClanMemberResponse {
+
+}
+
+message RemoveClanMemberRequest {
+  string clanName = 1;
+  string playerId = 2;
+}
+
+message RemoveClanMemberResponse {
+
 }

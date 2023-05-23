@@ -19,6 +19,7 @@ namespace Database.Repositories.Interfaces
         public Task<int> AddClan(Clan clan);
         public Task<Clan?> GetClan(string name);
         public Task<IEnumerable<Clan>> GetClans();
+        public Task<IEnumerable<Player>> GetClanMembers(string name);
         public Task<bool> UpdateClan(string name);
         public Task<bool> DeleteClan(string name);
 

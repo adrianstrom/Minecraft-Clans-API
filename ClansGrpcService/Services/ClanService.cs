@@ -48,11 +48,10 @@ namespace ClansGrpcService.Services
             {
                 return new AddClanResponse() { Message = validationResult.Errors.ToString() };
             }
-            
+
             // Validation succeeded, so add clan and set this as the active clan for the player.
             var clanId = await _clanRepository.AddClan(clan);
             await _playerRepository.SetMemberOfClan(clan.Leader, clanId);
-
             return new AddClanResponse();
         }
 
@@ -66,9 +65,34 @@ namespace ClansGrpcService.Services
             return null;
         }
 
-        public override Task<DeleteClanResponse> DeleteClan(DeleteClanRequest request, ServerCallContext context)
+        public async override Task<DeleteClanResponse> DeleteClan(DeleteClanRequest request, ServerCallContext context)
         {
-            return null;
+            var clanName = request.Name;
+            var playerId = request.PlayerId;
+
+            var clan = await _clanRepository.GetClan(clanName);
+
+            // Delete the clan only if it exists and the player is the leader of the clan
+            if (clan != null && clan.Leader == playerId)
+            {
+                await _clanRepository.DeleteClan(request.Name);
+                return new DeleteClanResponse() { Message = $"Successfully deleted the clan with name {clanName}" };
+            } 
+            else if(clan == null) 
+            {
+                return new DeleteClanResponse() { Message =  $"The clan with name {clanName} which you are trying to delete does not exist." };
+            }
+            return new DeleteClanResponse() { Message = $"Could not delete the clan with name {clanName} because you are not the leader of this clan"};
+        }
+
+        public override Task<AddClanMemberResponse> AddClanMember(AddClanMemberRequest request, ServerCallContext context)
+        {
+            return base.AddClanMember(request, context);
+        }
+
+        public override Task<RemoveClanMemberResponse> RemoveClanMember(RemoveClanMemberRequest request, ServerCallContext context)
+        {
+            return base.RemoveClanMember(request, context);
         }
 
     }

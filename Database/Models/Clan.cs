@@ -29,6 +29,9 @@ namespace Database.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        /// <summary>
+        /// The PlayerId of the leader of the clan
+        /// </summary>
         public string Leader { get; set; }
         public Location Location { get; set; }
     }

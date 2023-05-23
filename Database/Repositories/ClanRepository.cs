@@ -83,9 +83,9 @@ namespace Database.Repositories
 
         public async Task<IEnumerable<Player>> GetClanMembers(string name)
         {
-            var sql = @$"SELECT players.PlayerId, 
+            var sql = @$"SELECT players.PlayerId, players.ClanId
                          FROM players
-                         JOIN clans ON players.ClanId = clans.ClanId
+                         JOIN clans ON players.ClanId = clans.Id
                          WHERE clans.Name = @Name";
 
             using (var connection = new MySqlConnection(_connectionString))
