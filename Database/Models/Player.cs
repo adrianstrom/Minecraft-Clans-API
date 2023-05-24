@@ -12,6 +12,6 @@ namespace Database.Models
         /// The UUID of the player
         /// </summary>
         public string PlayerId { get; set; }
-        public int ClanId { get; set; }
+        public int? ClanId { get; set; }
     }
 }

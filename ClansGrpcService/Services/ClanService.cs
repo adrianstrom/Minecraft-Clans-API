@@ -78,22 +78,63 @@ namespace ClansGrpcService.Services
                 await _clanRepository.DeleteClan(request.Name);
                 return new DeleteClanResponse() { Message = $"Successfully deleted the clan with name {clanName}" };
             } 
-            else if(clan == null) 
+            else if (clan == null) 
             {
-                return new DeleteClanResponse() { Message =  $"The clan with name {clanName} which you are trying to delete does not exist." };
+                return new DeleteClanResponse() { Message =  $"The clan with name {clanName} which you are trying to delete does not exist" };
             }
             return new DeleteClanResponse() { Message = $"Could not delete the clan with name {clanName} because you are not the leader of this clan"};
         }
 
-        public override Task<AddClanMemberResponse> AddClanMember(AddClanMemberRequest request, ServerCallContext context)
+        public async override Task<AddClanMemberResponse> AddClanMember(AddClanMemberRequest request, ServerCallContext context)
         {
-            return base.AddClanMember(request, context);
+            var clanMemberId = request.ClanMemberId;
+            var playerToAddId = request.PlayerToAddId;
+
+            var clanMember = await _playerRepository.GetPlayer(clanMemberId);
+            if (!clanMember.ClanId.HasValue)
+            {
+                return new AddClanMemberResponse() { Message = "You are not part of any clan" };
+            }
+
+            var playerToAdd = await _playerRepository.GetPlayer(playerToAddId);
+            if (playerToAdd == null)
+            {
+                return new AddClanMemberResponse() { Message = "The player you are trying to add does not exist. Try again" };
+            } 
+
+            if (playerToAdd.ClanId.HasValue)
+            {
+                return new AddClanMemberResponse() { Message = "The player you are trying to add is already part of another clan" };
+            }
+
+            await _clanRepository.AddClanMember(playerToAddId, clanMember.ClanId.Value);
+            return new AddClanMemberResponse() { Message = "Added" };
         }
 
-        public override Task<RemoveClanMemberResponse> RemoveClanMember(RemoveClanMemberRequest request, ServerCallContext context)
+        public async override Task<RemoveClanMemberResponse> RemoveClanMember(RemoveClanMemberRequest request, ServerCallContext context)
         {
-            return base.RemoveClanMember(request, context);
-        }
+            var clanMemberId = request.ClanMemberId;
+            var playerToRemoveId = request.PlayerToRemoveId;
 
+            var clanMember = await _playerRepository.GetPlayer(clanMemberId);
+            if (!clanMember.ClanId.HasValue)
+            {
+                return new RemoveClanMemberResponse() { Message = "You are not part of any clan" };
+            }
+
+            var playerToRemove = await _playerRepository.GetPlayer(playerToRemoveId);
+            if (playerToRemove == null)
+            {
+                return new RemoveClanMemberResponse() { Message = "The player you are trying to remove does not exist. Try again" };
+            }
+
+            if (!playerToRemove.ClanId.HasValue)
+            {
+                return new RemoveClanMemberResponse() { Message = "The player you are trying to remove is not part of any clan" };
+            }
+            await _clanRepository.RemoveClanMember(playerToRemoveId, clanMember.ClanId.Value);
+
+            return new RemoveClanMemberResponse() { Message = "Removed" };
+        }
     }
 }

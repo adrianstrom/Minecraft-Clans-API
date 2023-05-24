@@ -18,6 +18,7 @@ namespace Database.Repositories.Interfaces
         /// <returns>Auto generated Id on the database server</returns>
         public Task<int> AddClan(Clan clan);
         public Task<Clan?> GetClan(string name);
+        public Task<Clan?> GetClan(int id);
         public Task<IEnumerable<Clan>> GetClans();
         public Task<IEnumerable<Player>> GetClanMembers(string name);
         public Task<bool> UpdateClan(string name);
@@ -28,12 +29,12 @@ namespace Database.Repositories.Interfaces
         /// </summary>
         /// <param name="clan"></param>
         /// <returns>True if member added to clan, false if not</returns>
-        public Task<bool> AddClanMember(Clan clan);
+        public Task<bool> AddClanMember(string playerId, int clanId);
         /// <summary>
         /// Removes member from clan
         /// </summary>
         /// <param name="clan"></param>
         /// <returns>True if member removed from clan, false if not</returns>
-        public Task<bool> RemoveClanMember(Clan clan);
+        public Task<bool> RemoveClanMember(string playerId, int clanId);
     }
 }

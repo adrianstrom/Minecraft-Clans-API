@@ -27,7 +27,7 @@ namespace Database.Models
 
     public class Clan
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         /// <summary>
         /// The PlayerId of the leader of the clan

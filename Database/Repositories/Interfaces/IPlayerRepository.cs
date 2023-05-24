@@ -10,7 +10,7 @@ namespace Database.Repositories.Interfaces
     public interface IPlayerRepository
     {
         public Task<bool> AddPlayer(Player player);
-        public Task<Player?> GetPlayer(string id);
+        public Task<Player> GetPlayer(string id);
         public Task<IEnumerable<Player>> GetPlayers();
         public Task<bool> SetMemberOfClan(string playerId, int clanId);
     }

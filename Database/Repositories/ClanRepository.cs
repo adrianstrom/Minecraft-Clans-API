@@ -96,17 +96,32 @@ namespace Database.Repositories
             }
         }
 
-        public async Task GetClanHomes()
+        public async Task<IEnumerable<Location>> GetClanHomes(string name)
         {
+            var sql = @$"SELECT clans_homes.Id, clans_homes.ClanId, clans_homes.X, clans_homes.Y, clans_homes.Z, clans_homes.Yaw, clans_homes.Pitch
+                         FROM clans_homes
+                         JOIN clans ON homes.ClanId = Clans.Id
+                         WHERE clans.Name = @Name";
 
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var homes = await connection.QueryAsync<Location>(sql, new { Name = name });
+                return homes;
+            }
         }
 
-        public Task<bool> AddClanMember(Clan clan)
+        public Task<bool> AddClanMember(string playerId, int clanId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveClanMember(Clan clan)
+        public Task<bool> RemoveClanMember(string playerId, int clanId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Clan?> GetClan(int id)
         {
             throw new NotImplementedException();
         }

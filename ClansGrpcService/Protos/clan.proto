@@ -60,18 +60,20 @@ message GetClanResponse {
 
 message AddClanMemberRequest {
   string clanName = 1;
-  string playerId = 2;
+  string clanMemberId = 2;
+  string playerToAddId = 3;
 }
 
 message AddClanMemberResponse {
-
+  string message = 1;
 }
 
 message RemoveClanMemberRequest {
   string clanName = 1;
-  string playerId = 2;
+  string clanMemberId = 2;
+  string playerToRemoveId = 3;
 }
 
 message RemoveClanMemberResponse {
-
+  string message = 1;
 }

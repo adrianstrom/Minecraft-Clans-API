@@ -42,7 +42,7 @@ namespace Database.Repositories
             return true;
         }
 
-        public async Task<Player?> GetPlayer(string id)
+        public async Task<Player> GetPlayer(string id)
         {
             throw new NotImplementedException();
         }
