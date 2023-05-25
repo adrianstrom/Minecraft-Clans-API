@@ -15,7 +15,7 @@ namespace Database.Repositories
         private string _connectionString;
 
         private string TableName => "clans";
-        private string FieldNames = "Name, Leader, World, X, Y, Z, Yaw, Pitch";
+        private string FieldNames = "Id, Name, Leader, World, X, Y, Z, Yaw, Pitch";
 
         public ClanRepository(IOptions<ClansDatabaseOptions> options)
         {
@@ -40,16 +40,62 @@ namespace Database.Repositories
             }
         }
 
-        public async Task<Clan?> GetClan(string name)
+        public async Task<Clan?> GetClan(string name, bool includeLocation = false, bool includeMembers = false, bool includeHomes = false)
         {
             var sql = $"SELECT {FieldNames} FROM {TableName} WHERE Name = @Name";
 
+            Clan clan;
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var clan = await connection.QuerySingleOrDefaultAsync<Clan>(sql, new { Name = name});
+                clan = await connection.QuerySingleOrDefaultAsync<Clan>(sql, new { Name = name});
+
+                if (includeLocation)
+                {
+                    clan.Location = await GetClanLocation(name, connection);
+                }
+
+                if (includeMembers)
+                {
+                    clan.Members = await GetClanMembers(name, connection);
+                }
+
+                if (includeHomes)
+                {
+                    clan.Homes = await GetClanHomes(name, connection);
+                }
                 return clan;
             }
+        }
+
+        private async Task<Location> GetClanLocation(string name, MySqlConnection connection)
+        {
+            var sql = @$"SELECT World, X, Y, Z, Yaw, Pitch
+                         FROM clans
+                         WHERE clans.Name = @Name";
+            var location = await connection.QuerySingleOrDefaultAsync<Location>(sql, new { Name = name });
+            return location;
+        }
+
+        private async Task<IEnumerable<Player>> GetClanMembers(string name, MySqlConnection connection)
+        {
+            var sql = @$"SELECT players.PlayerId, players.ClanId
+                         FROM players
+                         JOIN clans ON players.ClanId = clans.Id
+                         WHERE clans.Name = @Name";
+            var clanMembers = await connection.QueryAsync<Player>(sql, new { Name = name });
+            return clanMembers;
+        }
+
+        private async Task<IEnumerable<Location>> GetClanHomes(string name, MySqlConnection connection)
+        {
+            var tableName = "clan_homes";
+            var sql = @$"SELECT {tableName}.World, {tableName}.X, {tableName}.Y, {tableName}.Z, {tableName}.Yaw, {tableName}.Pitch
+                         FROM clan_homes
+                         JOIN clans ON {tableName}.ClanId = clans.Id
+                         WHERE clans.Name = @Name";
+            var homes = await connection.QueryAsync<Location>(sql, new { Name = name });
+            return homes;
         }
 
         public async Task<IEnumerable<Clan>> GetClans()
@@ -79,36 +125,6 @@ namespace Database.Repositories
                 await connection.ExecuteAsync(sql, new { Name = name });
             }
             return true;
-        }
-
-        public async Task<IEnumerable<Player>> GetClanMembers(string name)
-        {
-            var sql = @$"SELECT players.PlayerId, players.ClanId
-                         FROM players
-                         JOIN clans ON players.ClanId = clans.Id
-                         WHERE clans.Name = @Name";
-
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-                var players = await connection.QueryAsync<Player>(sql, new { Name = name });
-                return players;
-            }
-        }
-
-        public async Task<IEnumerable<Location>> GetClanHomes(string name)
-        {
-            var sql = @$"SELECT clans_homes.Id, clans_homes.ClanId, clans_homes.X, clans_homes.Y, clans_homes.Z, clans_homes.Yaw, clans_homes.Pitch
-                         FROM clans_homes
-                         JOIN clans ON homes.ClanId = Clans.Id
-                         WHERE clans.Name = @Name";
-
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-                var homes = await connection.QueryAsync<Location>(sql, new { Name = name });
-                return homes;
-            }
         }
 
         public Task<bool> AddClanMember(string playerId, int clanId)

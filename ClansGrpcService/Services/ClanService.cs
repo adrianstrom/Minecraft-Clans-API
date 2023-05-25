@@ -3,6 +3,7 @@ using Database.Models;
 using Database.Repositories.Interfaces;
 using FluentValidation;
 using Grpc.Core;
+using System.Linq;
 
 namespace ClansGrpcService.Services
 {
@@ -55,9 +56,21 @@ namespace ClansGrpcService.Services
             return new AddClanResponse();
         }
 
-        public override Task<GetClanResponse> GetClan(GetClanRequest request, ServerCallContext context)
+        public async override Task<GetClanResponse> GetClan(GetClanRequest request, ServerCallContext context)
         {
-            return null;
+            var clanName = request.ClanName;
+            var clan = await _clanRepository.GetClan(clanName, true, true, true);
+
+            if (clan == null) 
+            {
+                return new GetClanResponse() { Message = $"The clan with name {clanName} does not exist" };
+            }
+            var location = clan.Location;
+            var message = $@"Clan: {clan.Name}
+                             Leader: {clan.Leader}
+                             Location: {location?.World} ({(int)location?.X}, {(int)location?.Y}, {(int)location?.Z})
+                             Members: {string.Join(", ", clan.Members)}";
+            return new GetClanResponse() { Message = message };
         }
 
         public override Task<UpdateClanResponse> UpdateClan(UpdateClanRequest request, ServerCallContext context)

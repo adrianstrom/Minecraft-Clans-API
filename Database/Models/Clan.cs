@@ -28,11 +28,16 @@ namespace Database.Models
     public class Clan
     {
         public int Id { get; set; }
+        /// <summary>
+        /// Name of the clan
+        /// </summary>
         public string Name { get; set; }
         /// <summary>
         /// The PlayerId of the leader of the clan
         /// </summary>
         public string Leader { get; set; }
         public Location Location { get; set; }
+        public IEnumerable<Location> Homes { get; set; }
+        public IEnumerable<Player> Members { get; set; }
     }
 }

@@ -17,10 +17,9 @@ namespace Database.Repositories.Interfaces
         /// <param name="location">Location of clan</param>
         /// <returns>Auto generated Id on the database server</returns>
         public Task<int> AddClan(Clan clan);
-        public Task<Clan?> GetClan(string name);
+        public Task<Clan?> GetClan(string name, bool includeLocation = false, bool includeMembers = false, bool includeHomes = false);
         public Task<Clan?> GetClan(int id);
         public Task<IEnumerable<Clan>> GetClans();
-        public Task<IEnumerable<Player>> GetClanMembers(string name);
         public Task<bool> UpdateClan(string name);
         public Task<bool> DeleteClan(string name);
 

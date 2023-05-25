@@ -51,7 +51,7 @@ message UpdateClanResponse {
 }
 
 message GetClanRequest {
-  string message = 1;
+  string clanName = 1;
 }
 
 message GetClanResponse {
