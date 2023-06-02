@@ -17,6 +17,7 @@ namespace ClansGrpcService
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddControllers();
             builder.Services.AddGrpc();
 
             // Configure options
@@ -32,11 +33,14 @@ namespace ClansGrpcService
             builder.Services.AddScoped<IValidator<Clan>, ClanValidator>();
             builder.Services.AddScoped<IValidator<Player>, PlayerValidator>();
 
+            builder.Services.AddTransient<IClanService, ClanService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            app.MapGrpcService<ClanService>();
+            app.MapGrpcService<ClanGrpcService>();
             app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+            app.MapControllers();
 
             app.Run();
         }
