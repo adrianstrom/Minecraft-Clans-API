@@ -1,5 +1,5 @@
-using ClansGrpcService.Services;
-using ClansGrpcService.Validators;
+using ApiSite.Services;
+using ApiSite.Validators;
 using Database.Models;
 using Database.Options;
 using Database.Repositories;
@@ -8,7 +8,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 
-namespace ClansGrpcService
+namespace ApiSite
 {
     public class Program
     {

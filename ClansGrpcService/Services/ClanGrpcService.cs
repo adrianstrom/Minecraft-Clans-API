@@ -1,11 +1,11 @@
-﻿using ClansGrpcService.Protos;
+﻿using ApiSite.Protos;
 using Database.Models;
 using Database.Repositories.Interfaces;
 using FluentValidation;
 using Grpc.Core;
 using System.Linq;
 
-namespace ClansGrpcService.Services
+namespace ApiSite.Services
 {
     public class ClanGrpcService : Protos.Clan.ClanBase
     {

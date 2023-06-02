@@ -1,9 +1,8 @@
-﻿using ClansGrpcService.Validators;
-using Database.Models;
+﻿using Database.Models;
 using Database.Repositories.Interfaces;
 using FluentValidation;
 
-namespace ClansGrpcService.Services
+namespace ApiSite.Services
 {
     public class ClanService : IClanService
     {

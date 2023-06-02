@@ -1,7 +1,7 @@
-﻿using ClansGrpcService.Protos;
+﻿using ApiSite.Protos;
 using Database.Models;
 
-namespace ClansGrpcService.Mapper
+namespace ApiSite.Mapper
 {
     public static class ClanMapper
     {

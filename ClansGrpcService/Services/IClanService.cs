@@ -1,6 +1,6 @@
 ﻿using Database.Models;
 
-namespace ClansGrpcService.Services
+namespace ApiSite.Services
 {
     public interface IClanService
     {

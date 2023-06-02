@@ -1,7 +1,7 @@
 ﻿using Database.Models;
 using FluentValidation;
 
-namespace ClansGrpcService.Validators
+namespace ApiSite.Validators
 {
     public class PlayerValidator : AbstractValidator<Player>
     {

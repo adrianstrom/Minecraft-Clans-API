@@ -2,7 +2,7 @@
 using Database.Repositories.Interfaces;
 using FluentValidation;
 
-namespace ClansGrpcService.Validators
+namespace ApiSite.Validators
 {
     public class ClanValidator : AbstractValidator<Clan>
     {

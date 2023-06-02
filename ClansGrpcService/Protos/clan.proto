@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "ClansGrpcService.Protos";
+option csharp_namespace = "ApiSite.Protos";
 
 service Clan {
   rpc AddClan (AddClanRequest) returns (AddClanResponse);

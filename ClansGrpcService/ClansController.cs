@@ -1,11 +1,11 @@
-﻿using ClansGrpcService.Services;
+﻿using ApiSite.Services;
 using Database.Models;
 using Database.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace ClansGrpcService
+namespace ApiSite
 {
     [Route("api/[controller]")]
     [ApiController]
